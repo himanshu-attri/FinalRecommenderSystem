@@ -10,7 +10,7 @@ public class UserDataHelper {
     public static Map<String, User> userMap = new HashMap<>();
 
     public static boolean checkUserInfo(final User user) {
-        return userMap.containsKey(user.getUserId());
+        return userMap.containsKey(user.getId());
     }
 
     public static User getUser(final String userId) {

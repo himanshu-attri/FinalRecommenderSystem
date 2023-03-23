@@ -1,18 +1,14 @@
 package org.recommendation.service;
 
+import org.recommendation.utils.AppConstant;
+import org.recommendation.utils.AppInitializer;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class TopItemFinderFactory {
     public static TopItemFinder getTopItemFinder(final String attribute) {
-        if(AppConstant.GENRE.equals(attribute)){
-            return new GenreTopItemFinder();
-        }
-        else if (AppConstant.YEAR.equals(attribute)) {
-            return new YearTopItemFinder();
-        }
-        else if (AppConstant.MOVIE.equals(attribute)){
-            return new MovieTopItemFinder();
-        }
-        else {
-            return new UserTopItemFinder();
-        }
+        Map<String,TopItemFinder> topItemFinderMap = AppInitializer.topItemFinderInitializer();
+        return topItemFinderMap.get(attribute);
     }
 }

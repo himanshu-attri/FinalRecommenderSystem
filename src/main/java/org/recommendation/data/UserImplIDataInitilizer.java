@@ -5,9 +5,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.recommendation.data.helper.UserDataHelper;
-import org.recommendation.log.Logger;
-import org.recommendation.log.SoutLogger;
+import org.recommendation.log.ILogger;
+import org.recommendation.log.SoutILogger;
 import org.recommendation.model.User;
+import org.recommendation.utils.AppConstant;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,19 +19,19 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class UserDataInitilizer extends DataInitializer {
-    private final Logger logger = new SoutLogger();
+public class UserImplIDataInitilizer extends IDataInitializerImpl {
+    private final ILogger ILogger = new SoutILogger();
     private Map<String, User> userMap = new HashMap<>();
 
 
     @Override
-    public Map<String, String[]> readAndCleanData(final BufferedReader br) {
+    public Map<String, String[]> readAndCleanData(final BufferedReader br, final String splitter) {
         Map<String, String[]> dataStore = new TreeMap<>();
         String line;
         try {
             Integer counter = 0;
             while ((line = br.readLine()) != null) {
-                String[] data = line.split("\\s+");
+                String[] data = line.split(splitter);
                 int totalItems = data.length;
                 if (totalItems > 1) {
                     dataStore.put(counter.toString(), data);
@@ -39,7 +40,7 @@ public class UserDataInitilizer extends DataInitializer {
                 counter++;
             }
         } catch (Exception exception) {
-            logger.error("UserDataInitilizer - readAndCleanData", exception);
+            ILogger.error("UserDataInitilizer - readAndCleanData", exception);
         }
         UserDataHelper.userMap = Collections.unmodifiableMap(userMap);
         return dataStore;
@@ -61,7 +62,7 @@ public class UserDataInitilizer extends DataInitializer {
         int rownum = 0;
         try {
             XSSFSheet sheet = workbook.createSheet("ratings");
-            logger.info("Total Items received for writing in rating.xlxs: " + dataStore.size());
+            ILogger.info("Total Items received for writing in rating.xlxs: " + dataStore.size());
             for (String key : dataStore.keySet()) {
                 Row row = sheet.createRow(rownum++);
                 String[] objArr = dataStore.get(key);
@@ -73,12 +74,12 @@ public class UserDataInitilizer extends DataInitializer {
                     cell.setCellValue(obj);
                 }
             }
-            FileOutputStream out = new FileOutputStream(new File("src/main/java/org/recommendation/data/processed/ratings.xlsx"));
+            FileOutputStream out = new FileOutputStream(new File(AppConstant.FILE_BASE_PATH+"processed/ratings.xlsx"));
             workbook.write(out);
             out.close();
-            logger.info("ratings.csv written successfully on disk.");
+            ILogger.info("ratings.csv written successfully on disk.");
         } catch (Exception e) {
-            logger.error("UserDataInitilizer- writeData", e);
+            ILogger.error("UserDataInitilizer- writeData", e);
         }
     }
 }

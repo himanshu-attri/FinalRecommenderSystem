@@ -5,27 +5,28 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.recommendation.data.helper.MovieDataHelper;
-import org.recommendation.log.Logger;
-import org.recommendation.log.SoutLogger;
+import org.recommendation.log.ILogger;
+import org.recommendation.log.SoutILogger;
 import org.recommendation.model.Genre;
 import org.recommendation.model.Movie;
+import org.recommendation.utils.AppConstant;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 
-public class MovieDataInitializer extends DataInitializer{
 
-    private final Logger logger = new SoutLogger();
+public class MovieIDataInitializerImpl extends IDataInitializerImpl {
+
+    private final ILogger ILogger = new SoutILogger();
     private Map<String, Movie> movieMap = new HashMap<>();
     @Override
-    public Map<String, String[]> readAndCleanData(final BufferedReader br) {
+    public Map<String, String[]> readAndCleanData(final BufferedReader br, final String splitter) {
         Map<String,String[]> dataStore = new TreeMap<>();
         String line;
         try {
             while ((line = br.readLine()) != null){
-                String[] data = line.split("\\|");
+                String[] data = line.split(splitter);
                 String [] filteredData = new String[data.length];
                 int counter=0;
                 for(int i=0;i<data.length;i++){
@@ -48,23 +49,19 @@ public class MovieDataInitializer extends DataInitializer{
                 }
             }
         }catch (Exception exception){
-            logger.error("MovieDataInitializer readAndCleanData()",exception);
+            ILogger.error("MovieDataInitializer readAndCleanData()",exception);
         }
         MovieDataHelper.movieMap = Collections.unmodifiableMap(movieMap);
         return dataStore;
     }
     private void populateMovieData(final String [] filteredData){
-        if(filteredData.length<5){
-            logger.info("Insufficient data to map, skipping this row "+ filteredData[0]);
-            return;
-        }
         String movieId = filteredData[0];
         String title = filteredData[1];
         String year = filteredData[2];
         List<Genre> genres = new ArrayList<>();
         for (int i=5;i<= Math.min(23,filteredData.length);i++){
-            if(Objects.nonNull(filteredData[i]) &&!filteredData[i].isEmpty()  &&Integer.parseInt(filteredData[i])==1)
-                genres.add(Genre.valueOfLabel(GenreDataInitializer.GenereMap.get(Integer.toString(i-5))));
+            if(Objects.nonNull(filteredData[i]) && !filteredData[i].isEmpty()  &&Integer.parseInt(filteredData[i])==1)
+                genres.add(Genre.valueOfLabel(GenreIDataInitializerImpl.GenereMap.get(Integer.toString(i-5))));
         }
         movieMap.put(movieId, new Movie(movieId,title,year,genres));
     }
@@ -85,13 +82,14 @@ public class MovieDataInitializer extends DataInitializer{
                     cell.setCellValue(obj);
                 }
             }
-            FileOutputStream out = new FileOutputStream("src/main/java/org/recommendation/data/processed/movie.xlsx",false);
+            FileOutputStream out = new FileOutputStream(AppConstant.FILE_BASE_PATH+"processed/movie.xlsx",false);
             workbook.write(out);
             workbook.close();
             out.close();
-            logger.info("movie.xlsx written successfully on disk.");
+            ILogger.info("movie.xlsx written successfully on disk.");
         } catch (Exception e) {
             e.printStackTrace();
+            ILogger.error("MovieDataInitializerImpl - writeData", e);
         }
     }
 }

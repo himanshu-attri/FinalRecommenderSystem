@@ -39,8 +39,8 @@ public class UserSimilarityRatingTest {
         MovieDataHelper.movieMap.put("1223",new Movie("1223","hi","2020",new ArrayList<>()));
 
 
-        Filter filter = new UnWatchedMovieFilter();
-        userSimilarityRating = new UserSimilarityRating("123",5,1,filter);
+        IFilter IFilter = new UnWatchedMovieIFilter();
+        userSimilarityRating = new UserSimilarityRating("123",5,1, IFilter);
         Assert.assertNotNull(userSimilarityRating.getSimilarRatings());
     }
     @Test
@@ -62,8 +62,8 @@ public class UserSimilarityRatingTest {
         MovieDataHelper.movieMap.put("1222",new Movie("1222","hi","2020",new ArrayList<>()));
 
 
-        Filter filter = new UnWatchedMovieFilter();
-        userSimilarityRating = new UserSimilarityRating("123",5,1,filter);
+        IFilter IFilter = new UnWatchedMovieIFilter();
+        userSimilarityRating = new UserSimilarityRating("123",5,1, IFilter);
         Assert.assertTrue(userSimilarityRating.getSimilarRatings().isEmpty());
     }
 }

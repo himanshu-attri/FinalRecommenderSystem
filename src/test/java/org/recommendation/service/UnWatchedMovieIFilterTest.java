@@ -8,10 +8,10 @@ import org.recommendation.model.User;
 
 import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
-public class UnWatchedMovieFilterTest {
+public class UnWatchedMovieIFilterTest {
 
     @Mock
-    private UnWatchedMovieFilter unWatchedMovieFilter;
+    private UnWatchedMovieIFilter unWatchedMovieFilter;
     @Test
     public void satisfy() {
         User user = new User("123");

@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.recommendation.model.Movie;
 import org.recommendation.model.User;
-import org.recommendation.service.Filter;
-import org.recommendation.service.UnWatchedMovieFilter;
+import org.recommendation.service.IFilter;
+import org.recommendation.service.UnWatchedMovieIFilter;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class MovieDataHelperTest {
 
     @Test
     public void testFilterBy() {
-        final Filter f = new UnWatchedMovieFilter();
+        final IFilter f = new UnWatchedMovieIFilter();
         final User user = new User("231");
         ArrayList<Movie> list =MovieDataHelper.filterBy(f, user);
         Assert.assertNotNull(list);

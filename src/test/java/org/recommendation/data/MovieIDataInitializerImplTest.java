@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.recommendation.utils.AppConstant;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,19 +17,19 @@ import java.util.Map;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class MovieDataInitializerTest {
+public class MovieIDataInitializerImplTest {
     @InjectMocks
-    private MovieDataInitializer movieDataInitializer;
+    private MovieIDataInitializerImpl movieDataInitializer;
 
     @Test
     public void testReadAndCleanData() throws FileNotFoundException {
         File file = new File("src/main/java/org/recommendation/data/raw/movie.csv");
         final BufferedReader br = new BufferedReader(new FileReader(file));
-        Assert.assertNotNull(movieDataInitializer.readAndCleanData(br));
+        Assert.assertNotNull(movieDataInitializer.readAndCleanData(br, AppConstant.BARSPLITTER));
     }
     @Test ()
     public void testReadAndCleanDataNullFilePointer() {
-        Assert.assertTrue(movieDataInitializer.readAndCleanData(null).isEmpty());
+        Assert.assertTrue(movieDataInitializer.readAndCleanData(null,AppConstant.BARSPLITTER).isEmpty());
     }
     @Test
     public void testWriteData() {

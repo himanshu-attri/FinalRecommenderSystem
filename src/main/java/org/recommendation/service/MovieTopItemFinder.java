@@ -13,10 +13,10 @@ import java.util.Objects;
 import static org.recommendation.data.helper.MovieDataHelper.movieMap;
 import static org.recommendation.data.helper.UserDataHelper.userMap;
 
-public class MovieTopItemFinder extends TopItemFinder {
+public class MovieTopItemFinder extends TopItemFinder implements IMovieTopItemFinder{
     //top watched movie
     @Override
-    String getTopItem(final String input) {
+    public String getTopItem(final String input) {
         HashMap<String, Integer> movieToUserCount = new HashMap<>();
         for (User user : userMap.values()) {
             for (String movie : user.getMoviesRated()) {
@@ -41,10 +41,10 @@ public class MovieTopItemFinder extends TopItemFinder {
     public void printTop5RecommendationForUser(final String userId) {
         User newUser = UserDataHelper.getUser(userId);
         if (Objects.isNull(newUser)) {
-            logger.warn("User does not exist in user database, please check userId");
+            ILogger.warn("User does not exist in user database, please check userId");
             return;
         }
-        UnWatchedMovieFilter filter = new UnWatchedMovieFilter();
+        UnWatchedMovieIFilter filter = new UnWatchedMovieIFilter();
         UserSimilarityRating userSimilarityRating = new UserSimilarityRating(userId, 50, 5, filter);
         List<Rating> userRec = userSimilarityRating.getSimilarRatings();
         System.out.println("========== Final Result ==============");
@@ -53,7 +53,7 @@ public class MovieTopItemFinder extends TopItemFinder {
             if (newUser.getMoviesRated().contains(rating.getMovieId())) {
                 System.out.println("Mismatch found: " + rating.getMovieId());
             } else {
-                logger.info(MovieDataHelper.movieMap.get(rating.getMovieId()).toString());
+                ILogger.info(MovieDataHelper.movieMap.get(rating.getMovieId()).toString());
                 counter++;
             }
 

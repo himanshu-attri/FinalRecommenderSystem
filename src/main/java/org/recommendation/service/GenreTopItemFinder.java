@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 import static org.recommendation.data.helper.MovieDataHelper.movieMap;
 import static org.recommendation.data.helper.UserDataHelper.userMap;
 
-public class GenreTopItemFinder extends TopItemFinder {
+public class GenreTopItemFinder extends TopItemFinder implements IGenreTopItemFinder{
     //most rated genre
     @Override
-    String getTopItem(final String genre) {
+    public String getTopItem(final String genre) {
         queryRelatedMovies = movieMap.values().stream().filter(movie -> movie.getGenres().contains(Genre.valueOfLabel(genre))).collect(Collectors.toList());
         if (queryRelatedMovies.isEmpty()) {
-            logger.warn("No such movie exist in dataset");
+            ILogger.warn("No such movie exist in dataset");
             return null;
         }
         Movie movie = filterMaxRatedMovieOnScoreAndRaters();
@@ -36,12 +36,12 @@ public class GenreTopItemFinder extends TopItemFinder {
             }
         }
         String mostWatchedGenre = Collections.max(movieToGenreCount.entrySet(), Map.Entry.comparingByValue()).getKey();
-        logger.info(movieToGenreCount.entrySet().toString());
+        ILogger.info(movieToGenreCount.entrySet().toString());
         return mostWatchedGenre;
     }
 
     public String getTopMovieByYearAndGenre(final String genre, final String year) {
-        logger.info("running getTopMovieByYearAndGenre with input " + genre + " " + year);
+        ILogger.info("running getTopMovieByYearAndGenre with input " + genre + " " + year);
         queryRelatedMovies = movieMap.values().stream().filter(movie -> movie.getGenres().contains(Genre.valueOfLabel(genre)) && movie.getYear().equals(year)).
                 collect(Collectors.toList());
         Movie movie = filterMaxRatedMovieOnScoreAndRaters();

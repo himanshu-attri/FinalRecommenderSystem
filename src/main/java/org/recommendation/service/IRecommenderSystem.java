@@ -1,5 +1,5 @@
 package org.recommendation.service;
 
-public interface RecommenderSystem {
+public interface IRecommenderSystem {
     void printRecommendations(final String userInput);
 }

@@ -10,8 +10,8 @@ import static org.recommendation.data.helper.UserDataHelper.userMap;
 public class UserTopItemFinder extends TopItemFinder {
     //Top Active User
     @Override
-    String getTopItem(final String input) {
+    public String getTopItem(final String input) {
         Optional<User> user = userMap.values().stream().max(Comparator.comparingInt(User::numOfMoviesRated));
-        return user.isPresent() ? user.get().getUserId() : "No such user exist";
+        return user.isPresent() ? user.get().getId() : "No such user exist";
     }
 }

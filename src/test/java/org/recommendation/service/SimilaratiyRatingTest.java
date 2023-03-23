@@ -14,7 +14,7 @@ public class SimilaratiyRatingTest {
 
     @Test
     public void testSimilarityRating(){
-        Filter f = new UnWatchedMovieFilter();
+        IFilter f = new UnWatchedMovieIFilter();
         SimilaratiyRating similaratiyRating1 =  new UserSimilarityRating("123",23,4,f);
         assertNotNull(similaratiyRating1.getSimilarRatings());
         assertNotNull(similaratiyRating1.getUserId());

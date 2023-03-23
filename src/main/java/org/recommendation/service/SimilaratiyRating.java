@@ -9,7 +9,7 @@ abstract public class SimilaratiyRating {
     private String userId;
     private int similarityNum;
     private int minimalRater;
-    private Filter filter;
+    private IFilter IFilter;
 
     public String getUserId() {
         return userId;
@@ -23,15 +23,15 @@ abstract public class SimilaratiyRating {
         return minimalRater;
     }
 
-    public Filter getFilter() {
-        return filter;
+    public IFilter getFilter() {
+        return IFilter;
     }
 
-    public SimilaratiyRating(final String id, final int neighborSize, final int minRater, final Filter f) {
+    public SimilaratiyRating(final String id, final int neighborSize, final int minRater, final IFilter f) {
         this.userId = id;
         this.similarityNum = neighborSize;
         this.minimalRater = minRater;
-        this.filter = f;
+        this.IFilter = f;
     }
 
     public abstract List<Rating> getSimilarRatings();

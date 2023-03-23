@@ -1,7 +1,7 @@
 package org.recommendation.service;
 
-import org.recommendation.log.Logger;
-import org.recommendation.log.SoutLogger;
+import org.recommendation.log.ILogger;
+import org.recommendation.log.SoutILogger;
 import org.recommendation.model.Movie;
 import org.recommendation.model.User;
 
@@ -13,12 +13,12 @@ import static org.recommendation.data.helper.MovieDataHelper.movieMap;
 import static org.recommendation.data.helper.UserDataHelper.userMap;
 
 public abstract class TopItemFinder {
-    protected final Logger logger = new SoutLogger();
+    protected final ILogger ILogger = new SoutILogger();
     protected List<Movie> queryRelatedMovies = new ArrayList<>();
     protected HashMap<String, Double> movieScore = new HashMap<>();
     protected HashMap<String, Integer> movieRaters = new HashMap<>();
 
-    abstract String getTopItem(final String input);
+    public abstract String getTopItem(final String input);
 
     protected Movie filterMaxRatedMovieOnScoreAndRaters() {
         for (User user : userMap.values()) {
@@ -33,7 +33,7 @@ public abstract class TopItemFinder {
         String maxRatedMovieId = null;
         for (String movieId : movieScore.keySet()) {
             Double rating = movieScore.get(movieId) / movieRaters.get(movieId);
-            logger.info(movieMap.get(movieId).getTitle() + " " + rating);
+            ILogger.info(movieMap.get(movieId).getTitle() + " " + rating);
             if (rating > maxRating) {
                 maxRating = rating;
                 maxRatedMovieId = movieId;

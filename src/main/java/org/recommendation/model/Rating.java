@@ -1,8 +1,17 @@
 package org.recommendation.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Rating extends BaseModel implements Comparable<Rating> {
+    @Getter
+    @Setter
     private String movieId;
+    @Getter
+    @Setter
     private double ratingValue;
+    @Getter
+    @Setter
     private Long timestamp;
 
     public Rating(final String userId, final String movieId, final double ratingValue, final Long timestamp) {
@@ -17,35 +26,10 @@ public class Rating extends BaseModel implements Comparable<Rating> {
         this.movieId = movieId;
         this.ratingValue = ratingValue;
     }
-
-    public String getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
-    }
-
-    public double getRatingValue() {
-        return ratingValue;
-    }
-
-    public void setRatingValue(double ratingValue) {
-        this.ratingValue = ratingValue;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     @Override
     public String toString() {
         return "Rating{" +
-                "UserId='" + super.getUserId() + '\'' +
+                "UserId='" + super.getId() + '\'' +
                 "movieId='" + this.movieId + '\'' +
                 ", ratingValue=" + this.ratingValue +
                 ", timestamp=" + this.timestamp +

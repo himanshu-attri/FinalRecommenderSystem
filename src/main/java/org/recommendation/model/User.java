@@ -14,7 +14,7 @@ public class User extends BaseModel {
     }
 
     public void addRating(final String movieId, final double rating) {
-        movieMap.put(movieId, new Rating(super.getUserId(), movieId, rating));
+        movieMap.put(movieId, new Rating(super.getId(), movieId, rating));
     }
 
     public ArrayList<String> getMoviesRated() {

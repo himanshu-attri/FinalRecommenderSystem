@@ -13,7 +13,7 @@ import java.util.List;
 
 public class UserSimilarityRating extends SimilaratiyRating {
 
-    public UserSimilarityRating(final String id, final int neighborSize, final int minRater,final Filter f) {
+    public UserSimilarityRating(final String id, final int neighborSize, final int minRater,final IFilter f) {
         super(id, neighborSize, minRater, f);
     }
 
@@ -46,7 +46,7 @@ public class UserSimilarityRating extends SimilaratiyRating {
         List<Rating> similarityScore = new ArrayList<>();
         User user = UserDataHelper.getUser(super.getUserId());
         for (User other : UserDataHelper.getUsers()) {
-            String otherId = other.getUserId();
+            String otherId = other.getId();
             if (!otherId.equals(super.getUserId())) {
                 double cosineScore = getUserSimScore(user, other);
                 if (cosineScore != -100.0) {
@@ -73,7 +73,7 @@ public class UserSimilarityRating extends SimilaratiyRating {
             for (int i = 0; i < numNeighors; i++) {
                 Rating userRating = similarityScore.get(i);
                 Double cosineScore = userRating.getRatingValue();
-                String otherId = userRating.getUserId();
+                String otherId = userRating.getId();
                 User userOther = UserDataHelper.getUser(otherId);
                 double otherAvg = userOther.getAvgRating();
                 double rating = userOther.getMovieRatingForUser(movieId);
